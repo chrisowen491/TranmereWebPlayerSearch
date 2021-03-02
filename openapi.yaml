@@ -1,0 +1,143 @@
+openapi: "3.0.1"
+info:
+  description: "The tranmere web player search stack"
+  version: "1.0"
+  title: "PlayerSearch"
+paths:
+  /:
+    get:
+      summary: Find player appearances and goals by season
+      description: Find player appearances and goals by season
+      parameters:
+      - name: season
+        in: query
+        description: The season to search from - leave empty for top players in alltime stats
+        schema:
+          type: integer
+          format: int64
+      - name: sort
+        in: query
+        description: Sort order of players
+        schema:
+          type: string
+          default: starts
+          enum:
+          - goals
+          - starts
+      security:
+      - APIKeyHeader: []          
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerSummarys'
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        responses:
+          default:
+            statusCode: "200"
+        uri:
+          Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${TranmereWebPlayerSearch.Arn}/invocations
+    options:
+      responses:
+        '200':
+          description: Default response
+          headers:
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: |
+            {"statusCode" : 200}
+        responses:
+          default:
+            statusCode: 200
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Methods: "'OPTIONS,GET,POST'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"  
+components:
+  schemas:
+    PlayerSummarys:
+      type: object
+      properties:
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayerSummary'
+    Player:
+      type: object
+      properties:
+        foot:
+          type: string
+        placeOfBirth:
+          type: string
+        height:
+          type: string
+        profile:
+          type: string
+        dateOfBirth:
+          type: string
+        pic:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        position:
+          type: string
+    PlayerSummary:
+      type: object
+      properties:
+        Season:
+          type: string
+        starts:
+          type: integer
+          format: int64
+        assists:
+          type: integer
+          format: int32
+        goals:
+          type: integer
+          format: int32
+        penalties:
+          type: integer
+          format: int32
+        headers:
+          type: integer
+          format: int32
+        subs:
+          type: integer
+          format: int32
+        red:
+          type: integer
+          format: int32
+        yellow:
+          type: integer
+          format: int32
+        freekicks:
+          type: integer
+          format: int32
+        Apps:
+          type: integer
+          format: int32
+        Player:
+          type: string
+        bio:
+          $ref: '#/components/schemas/Player'
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      name: x-api-Key
+      in: header          
