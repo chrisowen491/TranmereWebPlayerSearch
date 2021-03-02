@@ -5,7 +5,7 @@ Description: >
 
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 5
     AutoPublishAlias: live
 
 Parameters:
@@ -35,6 +35,8 @@ Resources:
     Properties:
       Cors:
         AllowOrigin: "'*'"
+      Auth:
+        ApiKeyRequired: true  
       StageName: Prod
       Name: PlayerSearch
       DefinitionBody:
@@ -76,8 +78,6 @@ Resources:
             Path: /
             RestApiId: !Ref RestApi
             Method: get
-            Auth:
-              ApiKeyRequired: true
 
   AliasErrorMetricGreaterThanZeroAlarm:
     Type: "AWS::CloudWatch::Alarm"
