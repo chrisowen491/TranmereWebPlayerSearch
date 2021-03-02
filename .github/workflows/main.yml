@@ -83,6 +83,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: sam-template 
-#      - name: Post Deploy Checks
-#        run: 
-#          npm install newman && node ./node_modules/newman/bin/newman run ./api_tests/postman-collection.json -e ./api_tests/env/aws-$ENV_NAME.json 
+      - name: Post Deploy Checks
+        run: 
+          npm install newman && node ./node_modules/newman/bin/newman run ./api_tests/tranmere-web-player-search.postman_collection.json -e ./api_tests/env/aws-$ENV_NAME.json --env-var "testApiKey=${{ secrets.API_KEY }}"

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "da0cdf2a-8302-495b-82bd-944c0c62e577",
+		"_postman_id": "dc05366c-19e8-4a0b-a48d-facd6abb7c43",
 		"name": "tranmere-web-player-search",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -23,7 +23,7 @@
 									"",
 									"pm.test(\"Response\", function () {",
 									"    let response = pm.response.json();",
-									"    pm.expect(response.message).to.eql('hello world');",
+									"    pm.expect(response.players[0].Player).to.eql('Steve Mungall');",
 									"});",
 									""
 								],
@@ -33,9 +33,15 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-Key",
+								"value": "{{testApiKey}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{protocol}}://{{domain}}/{{basePath}}",
+							"raw": "{{protocol}}://{{domain}}/{{basePath}}/",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{domain}}"
