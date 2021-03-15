@@ -46,6 +46,15 @@ exports.handler = async function (event, context) {
     for(var x=0; x < results.length; x++ ) {
         delete results[x].TimeToLive;
         results[x].bio = playerHash[results[x].Player];
+        if(results[x].bio.picLink) {
+            results[x].bio.pic = {
+               fields:{
+                   file:{
+                       url: app.bio.picLink
+                   }
+               }
+           }
+        }
     }
 
     if(sort == "Goals") {
