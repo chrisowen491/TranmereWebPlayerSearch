@@ -50,7 +50,7 @@ exports.handler = async function (event, context) {
             results[x].bio.pic = {
                fields:{
                    file:{
-                       url: app.bio.picLink
+                       url: results[x].bio.picLink
                    }
                }
            }
