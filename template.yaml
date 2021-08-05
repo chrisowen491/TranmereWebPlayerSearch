@@ -61,8 +61,8 @@ Resources:
   TranmereWebPlayerSearch:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: node_modules/datadog-lambda-js/dist
-      Handler: handler.handler
+      CodeUri: src
+      Handler: TranmereWebPlayerSearch.handler
       Runtime: nodejs14.x
       DeploymentPreference:
         Type: !Ref Deployment
