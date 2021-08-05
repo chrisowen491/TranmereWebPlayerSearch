@@ -1,5 +1,12 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
+Transform:
+  - AWS::Serverless-2016-10-31
+  - Name: DatadogServerless
+    Parameters:
+      stackName: !Ref "AWS::StackName"
+      addLayers: false
+      env: !Ref EnvName
+      site: datadoghq.eu
 Description: >
   The tranmere web player search stack
 
@@ -54,15 +61,15 @@ Resources:
   TranmereWebPlayerSearch:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src
-      Handler: TranmereWebPlayerSearch.handler
-      Runtime: nodejs12.x
+      CodeUri: node_modules/datadog-lambda-js/dist
+      Handler: handler.handler
+      Runtime: nodejs14.x
       DeploymentPreference:
         Type: !Ref Deployment
         Alarms:
           - !Ref AliasErrorMetricGreaterThanZeroAlarm
           - !Ref LatestVersionErrorMetricGreaterThanZeroAlarm
-      Tracing: Active  
+      Tracing: PassThrough  
       Environment:
         Variables:
           EnvironmentName: !Ref EnvName
