@@ -73,7 +73,8 @@ exports.handler = async function (event, context) {
      "isBase64Encoded": false,
      "headers": { 
       'Content-Type': 'application/json', 
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'Cache-Control: public, max-age=86400'
     },
      "statusCode": 200,
      "body": JSON.stringify({players: results.slice(0, 50)})
