@@ -13,6 +13,7 @@ exports.handler = async function (event, context) {
     var season = event.queryStringParameters ? event.queryStringParameters.season : null;
     var sort = event.queryStringParameters ? event.queryStringParameters.sort : null;
     var player = event.queryStringParameters ? event.queryStringParameters.player : null;
+    var filter = event.queryStringParameters ? event.queryStringParameters.filter : null;
 
     var query = {};
 
@@ -53,6 +54,22 @@ exports.handler = async function (event, context) {
                }
            }
         }
+    }
+
+    if(filter) {
+        var newResults = [];
+        for(var i=0; i < results.length; i++) {
+            if(filter == "OnlyOneApp" && results[i].Apps == 1) {
+                newResults.push(results[i]);
+            } 
+            if(filter == "GK" && results[i].bio && results[i].bio.position  == "Goalkeeper") {
+                newResults.push(results[i]);
+            }        
+            if(filter == "STR" && results[i].bio && results[i].bio.position  == "Striker") {
+                newResults.push(results[i]);
+            }                    
+        }
+        results = newResults;
     }
 
     if(sort == "Goals") {
