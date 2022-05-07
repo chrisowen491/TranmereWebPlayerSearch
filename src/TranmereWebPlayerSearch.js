@@ -56,6 +56,7 @@ exports.handler = async function (event, context) {
         }
     }
 
+
     if(filter) {
         var newResults = [];
         for(var i=0; i < results.length; i++) {
